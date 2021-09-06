@@ -3,6 +3,7 @@ defmodule GameWeb.GameLive do
 
   alias GameWeb.Presence
   alias Phoenix.Socket.Broadcast
+  alias GameWeb.Live.Component.Modal
   alias GameWeb.Live.Component.WaitingModal
   alias GameWeb.Live.Component.StarRating
   alias GameWeb.Live.Component.OrderIcon
@@ -114,7 +115,7 @@ defmodule GameWeb.GameLive do
                   <% winner(assigns) -> %>
                     <!-- use a modal component here -->
                   <% settings_modal(assigns) -> %>
-                    <!-- use a modal component here -->
+                    <%= live_component Modal, label: "Close", click: "close" %>
                   <% waiting(assigns) -> %>
                     <%= live_component WaitingModal, label: "START GAME", click: "begingame", active_player: is_active(assigns), playerz: assigns.playerz, player_is_active: player_is_active(assigns, current_player_struct(assigns)) %>
                   <% details(assigns) -> %>
@@ -242,7 +243,14 @@ defmodule GameWeb.GameLive do
   end
 
   @impl true
-  def handle_event("update_icon", value, socket) do
+  def handle_event("update_icon", %{"icon-id" => icon}, %{assigns: %{player: %{user_id: user_id} = player}} = socket) do
+    Game.PlayerCache.update_player(user_id, icon)
+
+    new_player = %{player | icon: icon}
+    socket = socket |> assign(settings_modal: nil, player: new_player)
+
+    Phoenix.PubSub.broadcast(Game.PubSub, "player:#{user_id}", {:update_player, user_id, icon})
+
     {:noreply, socket}
   end
 
