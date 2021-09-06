@@ -4,6 +4,8 @@ defmodule GameWeb.GameLive do
   alias GameWeb.Presence
   alias Phoenix.Socket.Broadcast
   alias GameWeb.Live.Component.Modal
+  alias GameWeb.Live.Component.ModalTwo
+  alias GameWeb.Live.Component.ModalThree
   alias GameWeb.Live.Component.Settings
   alias GameWeb.Live.Component.WaitingModal
   alias GameWeb.Live.Component.StarRating
@@ -114,7 +116,7 @@ defmodule GameWeb.GameLive do
               <div class="content">
                 <%= cond do %>
                   <% winner(assigns) -> %>
-                    <!-- use a modal component here -->
+                    <%= live_component ModalTwo, label: "New Game", click: "restart", winner: winner(assigns) %>
                   <% settings_modal(assigns) -> %>
                     <%= live_component Modal, label: "Close", click: "close" do %>
                       <%= live_component Settings, id: current_player_struct(assigns).user_id %>
@@ -122,7 +124,7 @@ defmodule GameWeb.GameLive do
                   <% waiting(assigns) -> %>
                     <%= live_component WaitingModal, label: "START GAME", click: "begingame", active_player: is_active(assigns), playerz: assigns.playerz, player_is_active: player_is_active(assigns, current_player_struct(assigns)) %>
                   <% details(assigns) -> %>
-                    <!-- use a modal component here -->
+                    <%= live_component ModalThree, label: "Close", click: "close", player: details(assigns) %>
                   <% true -> %>
                     <!-- nothing -->
                 <% end %>
