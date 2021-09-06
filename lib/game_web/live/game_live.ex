@@ -115,7 +115,7 @@ defmodule GameWeb.GameLive do
                   <% winner(assigns) -> %>
                     <!-- use a modal component here -->
                   <% settings_modal(assigns) -> %>
-                    <%= live_component Modal, label: "Close", click: "close" %>
+                    <%= live_component Modal, label: "Close", click: "close", user_id: current_player_struct(assigns).user_id %>
                   <% waiting(assigns) -> %>
                     <%= live_component WaitingModal, label: "START GAME", click: "begingame", active_player: is_active(assigns), playerz: assigns.playerz, player_is_active: player_is_active(assigns, current_player_struct(assigns)) %>
                   <% details(assigns) -> %>

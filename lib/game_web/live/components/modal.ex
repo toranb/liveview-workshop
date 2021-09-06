@@ -1,7 +1,7 @@
 defmodule GameWeb.Live.Component.Modal do
   use Phoenix.LiveComponent
 
-  alias GameWeb.Router.Helpers, as: Routes
+  alias GameWeb.Live.Component.Settings
 
   @impl true
   def render(assigns) do
@@ -25,13 +25,7 @@ defmodule GameWeb.Live.Component.Modal do
 
             <div>
               <div class="mt-3 text-center sm:mt-5">
-                <div class="flex flex-wrap">
-                  <%= for icon <- @choices do %>
-                    <button class="block" type="button" phx-click="update_icon" phx-value-icon-id={icon.id}>
-                      <img class="h-16 w-16 rounded-full" src={icon.src}>
-                    </button>
-                  <% end %>
-                </div>
+                <%= live_component Settings, id: @user_id %>
               </div>
             </div>
             <div class="mt-5 sm:mt-6">
@@ -48,19 +42,5 @@ defmodule GameWeb.Live.Component.Modal do
   @impl true
   def mount(socket) do
     {:ok, socket}
-  end
-
-  @impl true
-  def update(%{click: click, label: label}, socket) do
-    choices = socket |> get_icons()
-
-    {:ok, assign(socket, choices: choices, click: click, label: label)}
-  end
-
-  def get_icons(socket) do
-    Game.Generator.numbers()
-    |> Enum.map(fn icon ->
-      %{id: icon, src: Routes.static_path(socket, "/images/avatars/#{icon}.png")}
-    end)
   end
 end
