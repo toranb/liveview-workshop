@@ -30,7 +30,7 @@ defmodule GameWeb.GameLive do
                 <div class="flex">
                   <%= if is_active_and_started(assigns) do %>
                     <span class="inline-block relative">
-                      <button type="button" id="skip" class="pass-animation h-16 w-16 rounded-full bg-green-500 border-4 border-solid border-green-600 border-opacity-7 leading-9">
+                      <button phx-click="skip_turn" type="button" id="skip" class="pass-animation h-16 w-16 rounded-full bg-green-500 border-4 border-solid border-green-600 border-opacity-7 leading-9">
                         <svg class="inline w-6 h-6 text-white -mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.933 12.8a1 1 0 000-1.6L6.6 7.2A1 1 0 005 8v8a1 1 0 001.6.8l5.333-4zM19.933 12.8a1 1 0 000-1.6l-5.333-4A1 1 0 0013 8v8a1 1 0 001.6.8l5.333-4z"></path></svg>
                       </button>
                     </span>
@@ -206,8 +206,10 @@ defmodule GameWeb.GameLive do
   end
 
   @impl true
-  def handle_event("skip_turn", value, socket) do
-    {:noreply, socket}
+  def handle_event("skip_turn", value, %{assigns: %{game_name: game_name, player: %Game.Player{user_id: user_id}}} = socket) do
+    with_session(game_name, socket, fn game_name ->
+      Game.Session.skip_turn(game_name, user_id)
+    end)
   end
 
   @impl true
