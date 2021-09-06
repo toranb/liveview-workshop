@@ -165,6 +165,10 @@ Hooks.DragIcon = {
       delayOnTouchOnly: true,
       onEnd: function onEnd(evt) {
         console.log('drag end event: ', evt.item);
+
+        _this.pushEvent('update_icon', {
+          icon_id: evt.item.id
+        })
       }
     });
   }

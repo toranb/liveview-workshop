@@ -8,9 +8,11 @@ defmodule GameWeb.Live.Component.Settings do
     ~H"""
       <div class="flex flex-wrap">
         <%= for icon <- @choices do %>
-          <button class="block" type="button" phx-click="update_icon" phx-value-icon-id={icon.id}>
-            <img class="h-16 w-16 rounded-full" src={icon.src}>
-          </button>
+          <div id={icon.id} draggable="true" phx-hook="DragIcon">
+            <button id={icon.id} class="block" type="button">
+              <img class="h-16 w-16 rounded-full" src={icon.src}>
+            </button>
+          </div>
         <% end %>
       </div>
     """

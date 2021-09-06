@@ -17,7 +17,7 @@ defmodule GameWeb.GameLive do
       <main>
         <div id="app">
           <div class="z-20 flex justify-center" style="height: 100px;">
-            <div class="game-hud w-full max-w-xl px-4 bg-white rounded-b-lg shadow-lg border-4 border-t-0 border-purple-400 border-opacity-75">
+            <div class="z-20 game-hud w-full max-w-xl px-4 bg-white rounded-b-lg shadow-lg border-4 border-t-0 border-purple-400 border-opacity-75">
               <div class="w-full flex items-center justify-between p-3 px-8 space-x-3">
                 <div class="flex-1">
                   <div class="flex items-center space-x-3">
@@ -37,11 +37,11 @@ defmodule GameWeb.GameLive do
                       </button>
                     </span>
                   <% else %>
-                    <span class="inline-block relative">
+                    <div id="drophere" class="inline-block relative" phx-hook="DragIcon">
                       <button type="button" phx-click="settings" class="block">
                         <img class="h-16 w-16 rounded-full" src={user_icon(@socket, assigns)}>
                       </button>
-                    </span>
+                    </div>
                   <% end %>
                 </div>
               </div>
@@ -246,7 +246,7 @@ defmodule GameWeb.GameLive do
   end
 
   @impl true
-  def handle_event("update_icon", %{"icon-id" => icon}, %{assigns: %{player: %{user_id: user_id} = player}} = socket) do
+  def handle_event("update_icon", %{"icon_id" => icon}, %{assigns: %{player: %{user_id: user_id} = player}} = socket) do
     Game.PlayerCache.update_player(user_id, icon)
 
     new_player = %{player | icon: icon}
