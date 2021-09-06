@@ -49,7 +49,7 @@ end
 
 ### skip_turn
 
-![skipTurnn]()
+![skip](https://user-images.githubusercontent.com/147411/132255669-5606446d-1dbb-4830-9306-c642a8369fec.gif)
 
 Start by adding a `phx-click` to the skip button and the `handle_event` code needed to drive this new game functionality.
 
@@ -57,7 +57,7 @@ hint: `handle_event` requires that you first get the game session by name. Once 
 
 ### stage
 
-![stagee]()
+![stage](https://user-images.githubusercontent.com/147411/132255679-87bcafe3-1348-4a6e-bb8d-0124c7115c59.gif)
 
 This function is executed when the player clicks a card. Because players can play 2, 3 or 4 of a kind be sure to use the `stage` function on the [Game.Session](https://github.com/toranb/liveview-workshop/blob/master/lib/game/session.ex) module. If the clicked card is not staged, play that card instead using the `play` function on the [Game.Session](https://github.com/toranb/liveview-workshop/blob/master/lib/game/session.ex) module.
 
@@ -67,7 +67,7 @@ hint: to see if the player is active use the function `is_active(socket.assigns)
 
 ### update_icon
 
-![updateIconn]()
+![icon](https://user-images.githubusercontent.com/147411/132255703-9cb7c06c-9f02-4e02-95f8-4e866f86f27e.gif)
 
 This function is executed only when the player opens the settings modal and clicks another icon. This feature will be completed first as a local `phx-click` event but then again as a `live_component` to show both solutions and highlight event bubbling.
 
