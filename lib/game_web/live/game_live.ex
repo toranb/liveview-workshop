@@ -213,8 +213,32 @@ defmodule GameWeb.GameLive do
   end
 
   @impl true
-  def handle_event("stage", value, socket) do
-    {:noreply, socket}
+  def handle_event("stage", %{"flip-id" => flip_id}, socket) do
+    %{
+      :game_name => game_name,
+      :player => %Game.Player{user_id: user_id},
+      :player_hands => player_hands
+    } = socket.assigns
+
+    if is_active(socket.assigns) do
+      cards =
+        case Enum.find(player_hands, fn {k, _} -> k == user_id end) do
+          nil -> []
+          {_, hand} -> hand
+        end
+
+      clicked_card = Enum.find(cards, fn card -> card.id == flip_id end)
+
+      with_session(game_name, socket, fn game_name ->
+        if clicked_card.staged == true do
+          Game.Session.play(game_name, user_id)
+        else
+          Game.Session.stage(game_name, flip_id, user_id)
+        end
+      end)
+    else
+      {:noreply, socket}
+    end
   end
 
   @impl true
