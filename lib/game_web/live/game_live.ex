@@ -4,6 +4,7 @@ defmodule GameWeb.GameLive do
   alias GameWeb.Presence
   alias Phoenix.Socket.Broadcast
   alias GameWeb.Live.Component.Modal
+  alias GameWeb.Live.Component.Settings
   alias GameWeb.Live.Component.WaitingModal
   alias GameWeb.Live.Component.StarRating
   alias GameWeb.Live.Component.OrderIcon
@@ -115,7 +116,9 @@ defmodule GameWeb.GameLive do
                   <% winner(assigns) -> %>
                     <!-- use a modal component here -->
                   <% settings_modal(assigns) -> %>
-                    <%= live_component Modal, label: "Close", click: "close", user_id: current_player_struct(assigns).user_id %>
+                    <%= live_component Modal, label: "Close", click: "close" do %>
+                      <%= live_component Settings, id: current_player_struct(assigns).user_id %>
+                    <% end %>
                   <% waiting(assigns) -> %>
                     <%= live_component WaitingModal, label: "START GAME", click: "begingame", active_player: is_active(assigns), playerz: assigns.playerz, player_is_active: player_is_active(assigns, current_player_struct(assigns)) %>
                   <% details(assigns) -> %>

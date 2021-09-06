@@ -25,7 +25,7 @@ defmodule GameWeb.Live.Component.Modal do
 
             <div>
               <div class="mt-3 text-center sm:mt-5">
-                <%= live_component Settings, id: @user_id %>
+                <%= render_block(@inner_block) %>
               </div>
             </div>
             <div class="mt-5 sm:mt-6">
