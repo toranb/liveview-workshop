@@ -59,7 +59,7 @@ hint: `handle_event` requires that you first get the game session by name. Once 
 
 ![stage](https://user-images.githubusercontent.com/147411/132255679-87bcafe3-1348-4a6e-bb8d-0124c7115c59.gif)
 
-This function is executed when the player clicks a card. Because players can play 2, 3 or 4 of a kind be sure to use the `stage` function on the [Game.Session](https://github.com/toranb/liveview-workshop/blob/master/lib/game/session.ex) module. If the clicked card is not staged, play that card instead using the `play` function on the [Game.Session](https://github.com/toranb/liveview-workshop/blob/master/lib/game/session.ex) module.
+This function is executed when the player clicks a card. Because players can play 2, 3 or 4 of a kind be sure to use the `stage` function on the [Game.Session](https://github.com/toranb/liveview-workshop/blob/master/lib/game/session.ex) module. If the clicked card is already staged (ie: `clicked_card.staged == true`), play that card instead using the `play` function on the [Game.Session](https://github.com/toranb/liveview-workshop/blob/master/lib/game/session.ex) module.
 
 Also, be sure to only stage or play cards for the active player.
 
@@ -70,6 +70,19 @@ hint: to see if the player is active use the function `is_active(socket.assigns)
 ![icon](https://user-images.githubusercontent.com/147411/132255703-9cb7c06c-9f02-4e02-95f8-4e866f86f27e.gif)
 
 This function is executed only when the player opens the settings modal and clicks another icon. This feature will be completed first as a local `phx-click` event but then again as a `live_component` to show both solutions and highlight event bubbling.
+
+Start by searching for an existing modal already in the codebase to borrow from, or write one from scratch. Use this as a starting point and bolt on the list of icons by using a function like this.
+
+```
+  alias GameWeb.Router.Helpers, as: Routes
+
+  def get_icons(socket) do
+    Game.Generator.numbers()
+    |> Enum.map(fn icon ->
+      %{id: icon, src: Routes.static_path(socket, "/images/avatars/#{icon}.png")}
+    end)
+  end
+```
 
 ## Bonus
 
